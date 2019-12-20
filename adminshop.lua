@@ -229,7 +229,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
       minetest.chat_send_player(player_name, "You dont have the required licenses!")
       return
     end
-    jeans_shopsystems.buy(player, item, quantity, buy_price)
+    local buyedItems = jeans_shopsystems.buy(player, item, quantity, buy_price)
+    meta:set_int("jeans_shopsystems:buyed", meta:get_int("jeans_shopsystems:buyed") + buyedItems)
     jeans_shopsystems.show_adminshop(pos, player)
     return
   end
@@ -238,7 +239,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
       minetest.chat_send_player(player_name, "You dont have the required licenses!")
       return
     end
-    jeans_shopsystems.buy_fill_inventory(player, item, buy_price)
+    local buyedItems = jeans_shopsystems.buy_fill_inventory(player, item, buy_price)
+    meta:set_int("jeans_shopsystems:buyed", meta:get_int("jeans_shopsystems:buyed") + buyedItems)
     jeans_shopsystems.show_adminshop(pos, player)
     return
   end
@@ -263,7 +265,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
       minetest.chat_send_player(player_name, "You dont have the required licenses!")
       return
     end
-    jeans_shopsystems.sell(player, item, quantity, sell_price)
+    local soldItems = jeans_shopsystems.sell(player, item, quantity, sell_price)
+    meta:set_int("jeans_shopsystems:sold", meta:get_int("jeans_shopsystems:sold") + soldItems)
     jeans_shopsystems.show_adminshop(pos, player)
     return
   end
@@ -272,7 +275,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
       minetest.chat_send_player(player_name, "You dont have the required licenses!")
       return
     end
-    jeans_shopsystems.empty_inventory(player, item, sell_price)
+    local soldItems = jeans_shopsystems.empty_inventory(player, item, sell_price)
+    meta:set_int("jeans_shopsystems:sold", meta:get_int("jeans_shopsystems:sold") + soldItems)
     jeans_shopsystems.show_adminshop(pos, player)
     return
   end
