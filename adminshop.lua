@@ -197,6 +197,7 @@ end)
 -- Customer Functions:
 --------------------------------------------------------------------------------
 -- Buy/Sell:
+local playerSellTimes = {}
 minetest.register_on_player_receive_fields(function(player, formname, fields)
   local player_name = player:get_player_name()
   if formname ~= "jeans_shopsystems:adminshop_customer" then
@@ -260,7 +261,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
   elseif fields.sell_all ~= nil and fields.sell_all ~= "" then
     quantity = -2
   end
+
+  -- allow that the player can sell just every 5 Seconds
   if quantity >= 0 then
+    local gametime = minetest.get_gametime()
+    if (playerSellTimes[player_name] ~= nil) then
+      if gametime - playerSellTimes[player_name] < 5 then
+        minetest.chat_send_player(player_name, "You can only sell every 5 seconds!")
+        return
+      end
+    end
+    playerSellTimes[player_name] = gametime
     if not jeans_shopsystems.check_licenses(player_name, licenses_table) then
       minetest.chat_send_player(player_name, "You dont have the required licenses!")
       return
